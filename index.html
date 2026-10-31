@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FormFlow — Client Intake & Requirements</title>
+<style>
+:root{--ink:#182230;--muted:#667085;--line:#e4e7ec;--bg:#f6f8fb;--brand:#3157d5;--brand2:#243fa5;--green:#087443;--red:#b42318}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--ink)}
+header{background:#fff;border-bottom:1px solid var(--line);padding:16px 24px;display:flex;justify-content:space-between;align-items:center;gap:12px;position:sticky;top:0;z-index:5}
+.brand{font-weight:800;font-size:20px;letter-spacing:-.5px}.brand span{color:var(--brand)}.tag{font-size:12px;color:var(--muted);margin-top:3px}
+button,input,select,textarea{font:inherit}button{border:0;border-radius:9px;padding:10px 14px;font-weight:650;cursor:pointer}button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid #a9bbff;outline-offset:2px}
+.primary{background:var(--brand);color:#fff}.primary:hover{background:var(--brand2)}.secondary{background:#eef2ff;color:#273b91}.plain{background:#fff;border:1px solid var(--line);color:var(--ink)}.danger{background:#fff0ef;color:var(--red)}
+.wrap{max-width:1440px;margin:0 auto;padding:24px}.intro{display:flex;justify-content:space-between;gap:20px;align-items:flex-start;margin-bottom:22px}.intro h1{margin:0 0 7px;font-size:27px;letter-spacing:-.8px}.intro p{margin:0;color:var(--muted);line-height:1.5}.pill{font-size:12px;background:#e8f8ef;color:var(--green);padding:6px 10px;border-radius:999px;font-weight:700;white-space:nowrap}
+.layout{display:grid;grid-template-columns:220px minmax(330px,1fr) minmax(300px,.9fr);gap:18px;align-items:start}.panel{background:#fff;border:1px solid var(--line);border-radius:15px;box-shadow:0 2px 6px #10182808;overflow:hidden}.panelhead{padding:16px 18px;border-bottom:1px solid var(--line)}.panelhead h2{font-size:15px;margin:0}.panelbody{padding:16px}.muted{color:var(--muted);font-size:13px;line-height:1.5}.toolbtn{width:100%;display:flex;justify-content:space-between;align-items:center;background:#fff;border:1px solid var(--line);margin-bottom:8px;text-align:left;color:var(--ink)}.toolbtn:hover{border-color:#a9b9f7;background:#f8faff}.toolbtn small{color:var(--muted);font-weight:500}
+label{display:block;font-size:13px;font-weight:650;margin-bottom:7px}input[type=text],input[type=email],input[type=number],textarea,select{width:100%;padding:10px 11px;border:1px solid #d0d5dd;border-radius:8px;background:#fff;color:var(--ink)}textarea{min-height:90px;resize:vertical}.formrow{margin-bottom:15px}.checkline{display:flex;align-items:center;gap:8px;font-size:13px;margin:12px 0}.checkline label{margin:0;font-weight:500}.fieldcard{border:1px solid var(--line);border-radius:11px;margin-bottom:10px;overflow:hidden}.fieldtop{display:flex;justify-content:space-between;align-items:center;padding:10px 12px;background:#fafbff;border-bottom:1px solid var(--line);gap:10px}.fieldtop strong{font-size:13px}.fieldtop span{font-size:11px;color:var(--muted)}.fieldbody{padding:12px;display:grid;grid-template-columns:1fr 1fr;gap:10px}.fieldbody .full{grid-column:1/-1}.fieldbody label{font-size:12px}.fieldbody input,.fieldbody select{padding:8px}.smallbtn{padding:6px 9px;font-size:12px}.empty{border:1px dashed #c8ced8;border-radius:12px;padding:26px 16px;text-align:center;color:var(--muted);font-size:13px}.previewtitle{font-size:20px;margin:0 0 8px}.previewdesc{color:var(--muted);font-size:13px;line-height:1.5;margin-bottom:22px}.previewfield{margin-bottom:16px}.previewfield label{font-size:13px}.required{color:var(--red)}.previewfield input,.previewfield textarea,.previewfield select{margin-top:7px}.previewfield .choices{display:flex;flex-wrap:wrap;gap:12px;margin-top:9px}.previewfield .choices label{font-weight:500;display:flex;gap:6px;align-items:center}.previewfield .choices input{width:auto;margin:0}.previewfield .hint{font-size:11px;color:var(--muted);margin-top:5px}.previewactions{display:flex;gap:8px;flex-wrap:wrap;margin-top:22px}.tabs{display:flex;gap:6px}.tab{background:transparent;color:var(--muted);padding:8px 10px}.tab.active{background:#eef2ff;color:var(--brand)}.submission{padding:12px;border:1px solid var(--line);border-radius:10px;margin-bottom:10px}.submission strong{display:block;font-size:13px}.submission p{font-size:12px;color:var(--muted);margin:6px 0}.status{display:inline-block;font-size:11px;border-radius:999px;padding:4px 7px;background:#eff8ff;color:#175cd3}.notice{padding:12px 14px;border-radius:10px;background:#fffaeb;border:1px solid #fedf89;color:#93370d;font-size:12px;line-height:1.5;margin-top:18px}.success{padding:12px;border-radius:9px;background:#ecfdf3;color:#027a48;border:1px solid #abefc6;font-size:13px;margin-bottom:14px}.hidden{display:none!important}.footer{padding:20px 0;text-align:center;color:var(--muted);font-size:12px}
+@media(max-width:1050px){.layout{grid-template-columns:190px 1fr}.rightcol{grid-column:1/-1}.rightcol .panelbody{display:grid;grid-template-columns:1fr 1fr;gap:16px}.rightcol .panelhead{display:flex;justify-content:space-between;align-items:center}}
+@media(max-width:700px){header{padding:13px 15px}.wrap{padding:15px}.intro{display:block}.intro .pill{display:inline-block;margin-top:12px}.layout{grid-template-columns:1fr}.rightcol{grid-column:auto}.rightcol .panelbody{display:block}.fieldbody{grid-template-columns:1fr}.fieldbody .full{grid-column:auto}.headeractions{display:flex;gap:6px}.headeractions button{padding:8px 9px;font-size:12px}}
+</style>
+</head>
+<body>
+<header>
+  <div><div class="brand">Form<span>Flow</span></div><div class="tag">Client Intake & Requirements Platform · MVP prototype</div></div>
+  <div class="headeractions"><button class="plain" id="exportJson">Export form</button><button class="primary" id="saveForm">Save draft</button></div>
+</header>
+<main class="wrap">
+  <section class="intro">
+    <div><h1>Build a client intake form</h1><p>Create a form, preview the customer experience, and review sample submissions from one workspace.</p></div>
+    <span class="pill">● Prototype running locally</span>
+  </section>
+  <div class="layout">
+    <aside class="panel">
+      <div class="panelhead"><h2>Add a field</h2></div>
+      <div class="panelbody">
+        <p class="muted">Choose a field type to add it to your form.</p>
+        <button class="toolbtn" data-add="text">Short text <small>＋</small></button>
+        <button class="toolbtn" data-add="textarea">Long answer <small>＋</small></button>
+        <button class="toolbtn" data-add="email">Email address <small>＋</small></button>
+        <button class="toolbtn" data-add="phone">Phone number <small>＋</small></button>
+        <button class="toolbtn" data-add="number">Number <small>＋</small></button>
+        <button class="toolbtn" data-add="date">Date <small>＋</small></button>
+        <button class="toolbtn" data-add="select">Dropdown <small>＋</small></button>
+        <button class="toolbtn" data-add="radio">Single choice <small>＋</small></button>
+        <button class="toolbtn" data-add="checkbox">Checkboxes <small>＋</small></button>
+        <button class="toolbtn" data-add="file">File upload <small>＋</small></button>
+        <div class="notice"><b>Prototype note:</b> File selection is demonstrated in the browser only. Secure uploads, accounts, shared links and cloud storage need backend services before public use.</div>
+      </div>
+    </aside>
+
+    <section class="panel">
+      <div class="panelhead"><h2>Form editor</h2></div>
+      <div class="panelbody">
+        <div class="formrow"><label for="formTitle">Form title</label><input id="formTitle" type="text" value="Website Project Brief"></div>
+        <div class="formrow"><label for="formDesc">Description</label><textarea id="formDesc">Tell us a little about your business and what you need. We'll review your requirements and get back to you.</textarea></div>
+        <div class="formrow"><label for="submitLabel">Submit button label</label><input id="submitLabel" type="text" value="Send my requirements"></div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin:20px 0 12px"><h3 style="font-size:14px;margin:0">Your fields</h3><span class="muted" id="fieldCount">0 fields</span></div>
+        <div id="fieldList"></div>
+        <button class="secondary" id="addFirst">＋ Add your first field</button>
+        <div class="previewactions"><button class="plain" id="resetForm">Reset demo</button><button class="primary" id="updatePreview">Update preview</button></div>
+      </div>
+    </section>
+
+    <aside class="rightcol">
+      <section class="panel">
+        <div class="panelhead"><h2>Customer preview</h2></div>
+        <div class="panelbody">
+          <div id="previewMessage"></div>
+          <h2 class="previewtitle" id="previewTitle"></h2>
+          <div class="previewdesc" id="previewDesc"></div>
+          <form id="customerForm"></form>
+        </div>
+      </section>
+      <section class="panel" style="margin-top:18px">
+        <div class="panelhead" style="display:flex;justify-content:space-between;align-items:center;gap:8px"><h2>Submission inbox</h2><button class="plain smallbtn" id="exportCsv">Export CSV</button></div>
+        <div class="panelbody"><div id="submissionList"></div><button class="danger smallbtn" id="clearSubmissions">Clear local submissions</button></div>
+      </section>
+    </aside>
+  </div>
+  <div class="footer">FormFlow MVP · Data stays in this browser on this device. Do not enter real customer or sensitive information.</div>
+</main>
+<script>
+const $ = s => document.querySelector(s);
+const typeNames={text:"Short text",textarea:"Long answer",email:"Email address",phone:"Phone number",number:"Number",date:"Date",select:"Dropdown",radio:"Single choice",checkbox:"Checkboxes",file:"File upload"};
+let fields=[
+ {id:uid(),type:"text",label:"Full name",required:true,placeholder:"e.g. Jane Wanjiku",options:""},
+ {id:uid(),type:"email",label:"Email address",required:true,placeholder:"name@example.com",options:""},
+ {id:uid(),type:"phone",label:"Phone number",required:false,placeholder:"+254 7xx xxx xxx",options:""},
+ {id:uid(),type:"select",label:"What do you need help with?",required:true,placeholder:"Choose an option",options:"Website design,Mobile app,Branding,Digital marketing,Other"},
+ {id:uid(),type:"textarea",label:"Describe your project",required:true,placeholder:"Share your goals, timeline and requirements…",options:""}
+];
+let submissions=load("formflow_submissions",[]);
+function uid(){return "f_"+Math.random().toString(36).slice(2,10)}
+function load(k,fallback){try{return JSON.parse(localStorage.getItem(k))??fallback}catch{return fallback}}
+function persist(){localStorage.setItem("formflow_fields",JSON.stringify(fields));localStorage.setItem("formflow_title",$("#formTitle").value);localStorage.setItem("formflow_desc",$("#formDesc").value);localStorage.setItem("formflow_submit",$("#submitLabel").value);localStorage.setItem("formflow_submissions",JSON.stringify(submissions))}
+function esc(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function initSaved(){fields=load("formflow_fields",fields);$("#formTitle").value=load("formflow_title","Website Project Brief");$("#formDesc").value=load("formflow_desc","Tell us about your project.");$("#submitLabel").value=load("formflow_submit","Send my requirements")}
+function addField(type){fields.push({id:uid(),type,label:typeNames[type]||"New field",required:false,placeholder:"Enter your answer",options:type==="select"||type==="radio"||type==="checkbox"?"Option 1,Option 2,Option 3":""});renderEditor();renderPreview()}
+function renderEditor(){
+ $("#fieldCount").textContent=fields.length+" field"+(fields.length===1?"":"s");
+ $("#fieldList").innerHTML=fields.length?fields.map((f,i)=>`<div class="fieldcard" data-id="${f.id}"><div class="fieldtop"><div><strong>${esc(f.label||"Untitled field")}</strong><br><span>${esc(typeNames[f.type]||f.type)}</span></div><div><button class="plain smallbtn" data-move="-1" ${i===0?"disabled":""}>↑</button> <button class="plain smallbtn" data-move="1" ${i===fields.length-1?"disabled":""}>↓</button> <button class="danger smallbtn" data-delete>Delete</button></div></div><div class="fieldbody"><div class="full"><label>Field label</label><input data-prop="label" type="text" value="${esc(f.label)}"></div><div class="full"><label>Placeholder / hint</label><input data-prop="placeholder" type="text" value="${esc(f.placeholder||"")}"></div>${["select","radio","checkbox"].includes(f.type)?`<div class="full"><label>Options (separate with commas)</label><input data-prop="options" type="text" value="${esc(f.options||"")}"></div>`:""}<div class="full"><label class="checkline"><input data-prop="required" type="checkbox" ${f.required?"checked":""}> Required field</label></div></div></div>`).join(""):`<div class="empty">No fields yet. Choose a field type from the left to start building your form.</div>`;
+ $("#addFirst").classList.toggle("hidden",fields.length>0);
+}
+function renderPreview(){
+ $("#previewTitle").textContent=$("#formTitle").value||"Untitled form";
+ $("#previewDesc").textContent=$("#formDesc").value;
+ $("#customerForm").innerHTML=fields.map(f=>{
+ let req=f.required?'<span class="required"> *</span>':"",label=`<label for="${f.id}">${esc(f.label)}${req}</label>`,ph=esc(f.placeholder||"");
+ let control="";
+ if(f.type==="textarea")control=`<textarea id="${f.id}" name="${f.id}" placeholder="${ph}" ${f.required?"required":""}></textarea>`;
+ else if(f.type==="select")control=`<select id="${f.id}" name="${f.id}" ${f.required?"required":""}><option value="">${ph||"Choose an option"}</option>${opts(f).map(o=>`<option>${esc(o)}</option>`).join("")}</select>`;
+ else if(["radio","checkbox"].includes(f.type))control=`<div class="choices">${opts(f).map((o,i)=>`<label><input type="${f.type}" name="${f.id}${f.type==="checkbox"?"[]":""}" value="${esc(o)}" ${f.required&&i===0?"required":""}> ${esc(o)}</label>`).join("")}</div>`;
+ else if(f.type==="file")control=`<input id="${f.id}" name="${f.id}" type="file" ${f.required?"required":""}><div class="hint">Demo only: selected file is not uploaded to a server.</div>`;
+ else control=`<input id="${f.id}" name="${f.id}" type="${f.type==="phone"?"tel":f.type}" placeholder="${ph}" ${f.required?"required":""}>`;
+ return `<div class="previewfield">${label}${control}</div>`
+ }).join("")+`<button class="primary" type="submit">${esc($("#submitLabel").value||"Submit")}</button>`;
+}
+function opts(f){return (f.options||"Option 1,Option 2").split(",").map(x=>x.trim()).filter(Boolean)}
+function renderSubmissions(){
+ const box=$("#submissionList");
+ if(!submissions.length){box.innerHTML='<div class="empty">No submissions yet. Submit the preview form to test the inbox.</div>';return}
+ box.innerHTML=[...submissions].reverse().map(s=>`<div class="submission"><strong>${esc(s.name||"New submission")}</strong><p>${esc(s.email||"No email")} · ${new Date(s.createdAt).toLocaleString()}</p><span class="status">New</span><details style="margin-top:9px"><summary style="font-size:12px;cursor:pointer">View answers</summary><div class="muted" style="margin-top:8px">${Object.entries(s.answers).map(([k,v])=>`<p><b>${esc(k)}:</b> ${esc(Array.isArray(v)?v.join(", "):v)}</p>`).join("")}</div></details></div>`).join("");
+}
+$("#fieldList").addEventListener("input",e=>{const card=e.target.closest(".fieldcard");if(!card)return;const f=fields.find(x=>x.id===card.dataset.id);if(!f)return;const p=e.target.dataset.prop;if(!p)return;f[p]=e.target.type==="checkbox"?e.target.checked:e.target.value;renderPreview();persist()});
+$("#fieldList").addEventListener("click",e=>{const card=e.target.closest(".fieldcard");if(!card)return;const idx=fields.findIndex(x=>x.id===card.dataset.id);if(e.target.hasAttribute("data-delete"))fields.splice(idx,1);if(e.target.hasAttribute("data-move")){const next=idx+Number(e.target.dataset.move);if(next>=0&&next<fields.length)[fields[idx],fields[next]]=[fields[next],fields[idx]]}renderEditor();renderPreview();persist()});
+document.querySelectorAll("[data-add]").forEach(b=>b.addEventListener("click",()=>addField(b.dataset.add)));
+$("#addFirst").onclick=()=>addField("text");
+$("#updatePreview").onclick=()=>{renderPreview();$("#previewMessage").innerHTML='<div class="success">Preview updated.</div>';setTimeout(()=>$("#previewMessage").innerHTML="",1800)};
+["formTitle","formDesc","submitLabel"].forEach(id=>$("#"+id).addEventListener("input",()=>{renderPreview();persist()}));
+$("#saveForm").onclick=()=>{persist();$("#saveForm").textContent="Saved ✓";setTimeout(()=>$("#saveForm").textContent="Save draft",1400)};
+$("#customerForm").addEventListener("submit",e=>{e.preventDefault();const fd=new FormData(e.target),answers={};fields.forEach(f=>{if(f.type==="checkbox"){answers[f.label]=fd.getAll(f.id+"[]")}else if(f.type==="file"){const file=fd.get(f.id);answers[f.label]=file&&file.name?file.name:""}else{answers[f.label]=fd.get(f.id)||""}});const name=answers["Full name"]||answers["Name"]||"New submission";const email=answers["Email address"]||answers["Email"]||"";submissions.push({id:uid(),name,email,answers,createdAt:new Date().toISOString()});persist();renderSubmissions();$("#previewMessage").innerHTML='<div class="success">Thank you! Your demo submission was saved in this browser.</div>';e.target.reset()});
+$("#exportJson").onclick=()=>download("formflow-form.json",JSON.stringify({title:$("#formTitle").value,description:$("#formDesc").value,submitLabel:$("#submitLabel").value,fields},null,2),"application/json");
+$("#exportCsv").onclick=()=>{if(!submissions.length){alert("There are no submissions to export yet.");return}const keys=[...new Set(submissions.flatMap(s=>Object.keys(s.answers)))];const quote=x=>'"'+String(x??"").replace(/"/g,'""')+'"';const csv=[["Submitted at","Name","Email",...keys].map(quote).join(","),...submissions.map(s=>[s.createdAt,s.name,s.email,...keys.map(k=>Array.isArray(s.answers[k])?s.answers[k].join("; "):s.answers[k]||"")].map(quote).join(","))].join("\r\n");download("formflow-submissions.csv",csv,"text/csv;charset=utf-8")};
+function download(name,content,type){const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([content],{type}));a.download=name;a.click();URL.revokeObjectURL(a.href)}
+$("#clearSubmissions").onclick=()=>{if(confirm("Delete all locally stored demo submissions?")){submissions=[];persist();renderSubmissions()}};
+$("#resetForm").onclick=()=>{if(confirm("Reset the form to the original demo fields?")){localStorage.removeItem("formflow_fields");localStorage.removeItem("formflow_title");localStorage.removeItem("formflow_desc");localStorage.removeItem("formflow_submit");fields=[{id:uid(),type:"text",label:"Full name",required:true,placeholder:"e.g. Jane Wanjiku",options:""},{id:uid(),type:"email",label:"Email address",required:true,placeholder:"name@example.com",options:""},{id:uid(),type:"phone",label:"Phone number",required:false,placeholder:"+254 7xx xxx xxx",options:""},{id:uid(),type:"select",label:"What do you need help with?",required:true,placeholder:"Choose an option",options:"Website design,Mobile app,Branding,Digital marketing,Other"},{id:uid(),type:"textarea",label:"Describe your project",required:true,placeholder:"Share your goals, timeline and requirements…",options:""}];$("#formTitle").value="Website Project Brief";$("#formDesc").value="Tell us a little about your business and what you need. We'll review your requirements and get back to you.";$("#submitLabel").value="Send my requirements";renderEditor();renderPreview();persist()}};
+initSaved();renderEditor();renderPreview();renderSubmissions();
+</script>
+</body>
+</html>
